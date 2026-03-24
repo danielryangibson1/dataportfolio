@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dan — Data Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8F7F4;
+      --ink: #1A1A1A;
+      --ink-light: #6B6B6B;
+      --accent: #2A6B4F;
+      --accent-light: #EAF2EE;
+      --border: #E2E0DB;
+      --white: #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 1.25rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(248,247,244,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 10rem 3rem 6rem;
+      max-width: 900px;
+      margin: 0 auto;
+      animation: slideUp 0.9s ease 0.1s both;
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-bio {
+      font-size: 1.05rem;
+      color: var(--ink-light);
+      max-width: 520px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ── CONTACT BUTTONS ── */
+    .contact-row {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    .btn-outline:hover {
+      background: var(--white);
+      border-color: var(--ink-light);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .btn-solid {
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .btn-solid:hover {
+      background: #333;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn svg { width: 14px; height: 14px; }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      padding: 0 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-divider span {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      white-space: nowrap;
+    }
+
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── PROJECT GRID ── */
+    .projects {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 3rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      animation: slideUp 0.9s ease 0.25s both;
+    }
+
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s ease;
+      display: block;
+    }
+
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+      border-color: transparent;
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      overflow: hidden;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .project-info {
+      padding: 1.1rem 1.25rem 1.25rem;
+    }
+
+    .project-tag {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: var(--ink);
+    }
+
+    .project-desc {
+      font-size: 0.82rem;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+
+    .project-arrow {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* ── CV SECTION ── */
+    .cv-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 3rem 6rem;
+      animation: slideUp 0.9s ease 0.35s both;
+    }
+
+    .cv-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+    }
+
+    .cv-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+
+    .cv-card p {
+      font-size: 0.88rem;
+      color: var(--ink-light);
+      margin-bottom: 1.75rem;
+      line-height: 1.6;
+    }
+
+    .cv-form {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .cv-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.7rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      background: var(--bg);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .cv-form input:focus { border-color: var(--accent); }
+    .cv-form input::placeholder { color: #AEABA4; }
+
+    .cv-form button {
+      padding: 0.7rem 1.5rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cv-form button:hover {
+      background: #215C40;
+      transform: translateY(-1px);
+    }
+
+    .cv-success {
+      display: none;
+      font-size: 0.88rem;
+      color: var(--accent);
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--ink-light);
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero, .projects, .cv-section, .section-divider { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero { padding-top: 7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-name" href="#">Dan</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#cv">CV</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-label">Data Analyst &amp; BI Developer</p>
+    <h1>Turning data<br>into <em>clarity</em></h1>
+    <p class="hero-bio">
+      I build dashboards, data models, and automated pipelines that help people make faster, better decisions. Based in Abu Dhabi.
+    </p>
+
+    <div class="contact-row">
+      <!-- Replace href with your LinkedIn URL -->
+      <a class="btn btn-outline" href="https://linkedin.com/in/yourprofile" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>
+        LinkedIn
+      </a>
+
+      <!-- Replace with your email -->
+      <a class="btn btn-outline" href="mailto:your@email.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email me
+      </a>
+
+      <a class="btn btn-solid" href="#cv">
+        Request CV
+      </a>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <div class="section-divider" id="projects"><span>Projects</span></div>
+
+  <div class="projects">
+
+    <!-- PRICE NOTIFICATIONS PROJECT CARD -->
+    <a class="project-card" href="price-notifications.html">
+      <div class="project-thumb">
+        <!-- Replace src with your actual screenshot -->
+        <img src="images/price-notifications-thumb.png" alt="BTC Price Notifications" onerror="this.style.display='none';this.parentElement.innerHTML='📊'">
+      </div>
+      <div class="project-info">
+        <p class="project-tag">Power BI · Python</p>
+        <h3 class="project-title">BTC Price Notifications</h3>
+        <p class="project-desc">An automated notification system triggered by configurable price movement thresholds, with interactive dashboard analysis.</p>
+        <div class="project-arrow">View project →</div>
+      </div>
+    </a>
+
+    <!-- PLACEHOLDER CARD — duplicate and fill in for future projects -->
+    <a class="project-card" href="#" style="opacity:0.4; pointer-events:none;">
+      <div class="project-thumb">＋</div>
+      <div class="project-info">
+        <p class="project-tag">Coming soon</p>
+        <h3 class="project-title">Next Project</h3>
+        <p class="project-desc">More work to be added here.</p>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- CV REQUEST -->
+  <div class="section-divider" id="cv"><span>Request CV</span></div>
+
+  <section class="cv-section">
+    <div class="cv-card">
+      <h2>Get a copy of my CV</h2>
+      <p>Enter your email below and I'll send it over to you directly.</p>
+
+      <!--
+        SETUP INSTRUCTIONS:
+        1. Go to https://formspree.io and create a free account
+        2. Create a new form and copy your form ID
+        3. Replace "YOUR_FORM_ID" in the action URL below
+      -->
+      <form
+        class="cv-form"
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+        id="cvForm"
+      >
+        <input
+          type="email"
+          name="email"
+          placeholder="your@email.com"
+          required
+        />
+        <input
+          type="hidden"
+          name="message"
+          value="Hey Dan, could I get a copy of your CV please?"
+        />
+        <button type="submit">Send request</button>
+      </form>
+      <p class="cv-success" id="cvSuccess">✓ Request sent — I'll be in touch soon!</p>
+    </div>
+  </section>
+
+  <footer>
+    Built with HTML &amp; hosted on GitHub Pages
+  </footer>
+
+  <script>
+    // Handle Formspree submission with success message
+    const form = document.getElementById('cvForm');
+    const success = document.getElementById('cvSuccess');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
