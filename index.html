@@ -721,18 +721,8 @@
       }
     });
 
-    // ── MOBILE: swap copy-box buttons for direct links ──
+    // ── MOBILE: swap mobile copy-box for direct tel link ──
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-      // Replace email copy-wrapper with mailto link
-      const emailWrapper = document.getElementById('emailBox')?.closest('.copy-wrapper');
-      if (emailWrapper) {
-        const link = document.createElement('a');
-        link.className = 'btn btn-outline';
-        link.href = 'mailto:' + eUser + '@' + eDomain;
-        link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Email';
-        emailWrapper.replaceWith(link);
-      }
-
       // Replace mobile copy-wrapper with tel link
       const mobileWrapper = document.getElementById('mobileBox')?.closest('.copy-wrapper');
       if (mobileWrapper) {
