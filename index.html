@@ -672,7 +672,8 @@
 
   <footer><span style="font-size:0.8rem; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; padding:0.3rem 0.7rem; color:var(--bg);">.</span></footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
     // Formspree submission
     const form = document.getElementById('cvForm');
     const success = document.getElementById('cvSuccess');
@@ -709,4 +710,36 @@
       });
     }
 
-    // Close copy-boxes when clickin
+    // Close copy-boxes when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.copy-wrapper')) {
+        document.querySelectorAll('.copy-box').forEach(b => b.classList.remove('open'));
+      }
+    });
+
+    // ── MOBILE: swap copy-box buttons for direct links ──
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      // Replace email copy-wrapper with mailto link
+      const emailWrapper = document.getElementById('emailBox')?.closest('.copy-wrapper');
+      if (emailWrapper) {
+        const link = document.createElement('a');
+        link.className = 'btn btn-outline';
+        link.href = 'mailto:danielryangibson1@gmail.com';
+        link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Email';
+        emailWrapper.replaceWith(link);
+      }
+
+      // Replace mobile copy-wrapper with tel link
+      const mobileWrapper = document.getElementById('mobileBox')?.closest('.copy-wrapper');
+      if (mobileWrapper) {
+        const link = document.createElement('a');
+        link.className = 'btn btn-outline';
+        link.href = 'tel:+971585381938';
+        link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Mobile';
+        mobileWrapper.replaceWith(link);
+      }
+    }
+  </script>
+
+</body>
+</html>
