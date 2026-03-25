@@ -547,7 +547,7 @@
           Email
         </button>
         <div class="copy-box" id="emailBox">
-          <span id="emailText"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff9b9e91969a938d869e9198969d8c9091cebf98929e9693d19c9092">[email&#160;protected]</a></span>
+          <span id="emailText"></span>
           <button class="copy-btn" onclick="copyText('emailText', this)">Copy</button>
         </div>
       </div>
@@ -672,8 +672,12 @@
 
   <footer><span style="font-size:0.8rem; font-weight:400; letter-spacing:0.08em; text-transform:uppercase; padding:0.3rem 0.7rem; color:var(--bg);">.</span></footer>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
+    // Build email so Cloudflare can't detect it
+    const eUser = 'danielryangibson1';
+    const eDomain = 'gmail.com';
+    document.getElementById('emailText').textContent = eUser + '@' + eDomain;
+
     // Formspree submission
     const form = document.getElementById('cvForm');
     const success = document.getElementById('cvSuccess');
@@ -724,7 +728,7 @@
       if (emailWrapper) {
         const link = document.createElement('a');
         link.className = 'btn btn-outline';
-        link.href = 'mailto:danielryangibson1@gmail.com';
+        link.href = 'mailto:' + eUser + '@' + eDomain;
         link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Email';
         emailWrapper.replaceWith(link);
       }
