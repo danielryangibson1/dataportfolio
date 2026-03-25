@@ -52,15 +52,6 @@
       z-index: 100;
     }
 
-    .nav-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: var(--ink);
-      text-decoration: none;
-    }
-
     .nav-links {
       display: flex;
       gap: 2rem;
@@ -74,10 +65,15 @@
       text-transform: uppercase;
       color: var(--ink-light);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color 0.2s, background 0.2s;
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
     }
 
-    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover {
+      color: var(--ink);
+      background: rgba(0,0,0,0.05);
+    }
 
     /* ── HERO ── */
     .hero {
@@ -88,7 +84,7 @@
     }
 
     .hero-label {
-      font-size: 0.75rem;
+      font-size: 0.95rem;
       font-weight: 400;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -104,11 +100,142 @@
       letter-spacing: -0.01em;
       margin-bottom: 1.5rem;
       color: var(--ink);
+      white-space: nowrap;
     }
 
     .hero h1 em {
       font-style: italic;
       color: var(--accent);
+    }
+
+    /* ── COPY BOX ── */
+    .copy-wrapper {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .copy-box {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 200;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--ink);
+    }
+
+    .copy-box.open { display: flex; }
+
+    .copy-btn {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      background: var(--accent-light);
+      border: none;
+      border-radius: 4px;
+      padding: 0.25rem 0.6rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .copy-btn:hover { background: #d4e9df; }
+    .copy-btn.copied { color: var(--ink-light); }
+
+    /* ── HOW I WORK ── */
+    .how-i-work {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 3rem 4rem;
+      animation: slideUp 0.9s ease 0.2s both;
+    }
+
+    .how-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .how-divider-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      white-space: nowrap;
+    }
+
+    .how-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.25rem;
+    }
+
+    .how-step {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.5rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .how-step-bar {
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      border-radius: 10px 0 0 10px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .how-step:hover .how-step-bar { opacity: 1; }
+
+    .how-step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .how-step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .how-step-desc {
+      font-size: 0.9rem;
+      color: var(--ink-light);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    @media (max-width: 600px) {
+      .how-steps { grid-template-columns: 1fr; }
+      .how-i-work { padding-left: 1.5rem; padding-right: 1.5rem; }
     }
 
     .hero-bio {
@@ -124,7 +251,7 @@
       display: flex;
       gap: 0.75rem;
       flex-wrap: wrap;
-      margin-bottom: 5rem;
+      margin-bottom: 3rem;
     }
 
     .btn {
@@ -172,16 +299,17 @@
     /* ── DIVIDER ── */
     .section-divider {
       max-width: 900px;
-      margin: 0 auto 3rem;
+      margin: 3rem auto 3rem;
       padding: 0 3rem;
       display: flex;
       align-items: center;
       gap: 1rem;
     }
 
-    .section-divider span {
+    .section-divider-label {
       font-size: 0.72rem;
-      letter-spacing: 0.15em;
+      font-weight: 500;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink-light);
       white-space: nowrap;
@@ -231,6 +359,22 @@
       justify-content: center;
       font-size: 2rem;
       overflow: hidden;
+      position: relative;
+    }
+
+    .thumb-coming-soon {
+      position: absolute;
+      inset: 0;
+      background: rgba(42, 107, 79, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
     }
 
     .project-thumb img {
@@ -280,7 +424,7 @@
     .cv-section {
       max-width: 900px;
       margin: 0 auto;
-      padding: 0 3rem 6rem;
+      padding: 0 3rem 4rem;
       animation: slideUp 0.9s ease 0.35s both;
     }
 
@@ -357,7 +501,7 @@
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid var(--border);
-      padding: 2rem 3rem;
+      padding: 3rem 3rem;
       text-align: center;
       font-size: 0.78rem;
       color: var(--ink-light);
@@ -374,33 +518,51 @@
 <body>
 
   <nav>
-    <a class="nav-name" href="#">Dan</a>
     <ul class="nav-links">
+      <li><a href="#top">Details</a></li>
+      <li><a href="#approach">Approach</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#cv">CV</a></li>
     </ul>
   </nav>
 
   <!-- HERO -->
-  <section class="hero">
-    <p class="hero-label">Data Analyst &amp; BI Developer</p>
-    <h1>Turning data<br>into <em>clarity</em></h1>
+  <section class="hero" id="top">
+    <p class="hero-label">Data Analyst &amp; BI Developer · Abu Dhabi</p>
+    <h1>Daniel Gibson</h1>
     <p class="hero-bio">
-      I build dashboards, data models, and automated pipelines that help people make faster, better decisions. Based in Abu Dhabi.
+      I take the time to understand the business requirement behind a request — what a stakeholder actually needs, not just what they've asked for. Working across the full process from source data to senior management, I deliver analysis that's clear, reliable, and ready to act on. Specialising in SQL, Power BI, and Python data pipelines.
     </p>
 
     <div class="contact-row">
-      <!-- Replace href with your LinkedIn URL -->
-      <a class="btn btn-outline" href="https://linkedin.com/in/yourprofile" target="_blank">
+      <a class="btn btn-outline" href="https://www.linkedin.com/in/dangib" target="_blank">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45C23.2 24 24 23.23 24 22.27V1.73C24 .77 23.2 0 22.22 0z"/></svg>
         LinkedIn
       </a>
 
-      <!-- Replace with your email -->
-      <a class="btn btn-outline" href="mailto:your@email.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        Email me
-      </a>
+      <!-- EMAIL BUTTON -->
+      <div class="copy-wrapper">
+        <button class="btn btn-outline" onclick="toggleBox('emailBox', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </button>
+        <div class="copy-box" id="emailBox">
+          <span id="emailText"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ff9b9e91969a938d869e9198969d8c9091cebf98929e9693d19c9092">[email&#160;protected]</a></span>
+          <button class="copy-btn" onclick="copyText('emailText', this)">Copy</button>
+        </div>
+      </div>
+
+      <!-- MOBILE BUTTON -->
+      <div class="copy-wrapper">
+        <button class="btn btn-outline" onclick="toggleBox('mobileBox', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Mobile
+        </button>
+        <div class="copy-box" id="mobileBox">
+          <span id="mobileText">+971 58 538 1938</span>
+          <button class="copy-btn" onclick="copyText('mobileText', this)">Copy</button>
+        </div>
+      </div>
 
       <a class="btn btn-solid" href="#cv">
         Request CV
@@ -408,24 +570,54 @@
     </div>
   </section>
 
+  <!-- APPROACH -->
+  <div class="how-i-work" id="approach">
+    <div class="how-divider">
+      <span class="how-divider-label">Approach</span>
+      <div class="how-divider-line"></div>
+    </div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-bar"></div>
+        <div class="how-step-num">1</div>
+        <div class="how-step-title">The Question</div>
+        <p class="how-step-desc">Take the time to understand what's actually being asked — the underlying need and the decision being supported.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-bar"></div>
+        <div class="how-step-num">2</div>
+        <div class="how-step-title">The Answer</div>
+        <p class="how-step-desc">Start with a clear, concise answer. One sentence, immediately understood.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-step-bar"></div>
+        <div class="how-step-num">3</div>
+        <div class="how-step-title">The Breakdown</div>
+        <p class="how-step-desc">Provide the supporting detail — methodology, assumptions, and context — but only when necessary.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- PROJECTS -->
-  <div class="section-divider" id="projects"><span>Projects</span></div>
+  <div class="section-divider" id="projects">
+    <span class="section-divider-label">Projects</span>
+  </div>
 
   <div class="projects">
 
     <!-- PRICE NOTIFICATIONS PROJECT CARD -->
-    <a class="project-card" href="price-notifications.html">
+    <div class="project-card" style="cursor: default;">
       <div class="project-thumb">
-        <!-- Replace src with your actual screenshot -->
-        <img src="images/price-notifications-thumb.png" alt="BTC Price Notifications" onerror="this.style.display='none';this.parentElement.innerHTML='📊'">
+        <img src="images/price-notifications-thumb.png" alt="BTC Price Notifications" onerror="this.style.display='none'">
+        <div class="thumb-coming-soon">Coming Soon</div>
       </div>
       <div class="project-info">
         <p class="project-tag">Power BI · Python</p>
         <h3 class="project-title">BTC Price Notifications</h3>
-        <p class="project-desc">An automated notification system triggered by configurable price movement thresholds, with interactive dashboard analysis.</p>
+        <p class="project-desc">A framework for analysing which BTC price movement threshold optimises notification frequency — backed by live Binance data and an interactive Power BI dashboard.</p>
         <div class="project-arrow">View project →</div>
       </div>
-    </a>
+    </div>
 
     <!-- PLACEHOLDER CARD — duplicate and fill in for future projects -->
     <a class="project-card" href="#" style="opacity:0.4; pointer-events:none;">
@@ -440,7 +632,9 @@
   </div>
 
   <!-- CV REQUEST -->
-  <div class="section-divider" id="cv"><span>Request CV</span></div>
+  <div class="section-divider" id="cv">
+    <span class="section-divider-label">CV</span>
+  </div>
 
   <section class="cv-section">
     <div class="cv-card">
@@ -455,7 +649,7 @@
       -->
       <form
         class="cv-form"
-        action="https://formspree.io/f/YOUR_FORM_ID"
+        action="https://formspree.io/f/xwvrgygw"
         method="POST"
         id="cvForm"
       >
@@ -476,12 +670,10 @@
     </div>
   </section>
 
-  <footer>
-    Built with HTML &amp; hosted on GitHub Pages
-  </footer>
+  <footer></footer>
 
-  <script>
-    // Handle Formspree submission with success message
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Formspree submission
     const form = document.getElementById('cvForm');
     const success = document.getElementById('cvSuccess');
 
@@ -498,6 +690,23 @@
         success.style.display = 'block';
       }
     });
-  </script>
-</body>
-</html>
+
+    // Copy-box toggle — closes other open boxes
+    function toggleBox(id, btn) {
+      const box = document.getElementById(id);
+      const isOpen = box.classList.contains('open');
+      document.querySelectorAll('.copy-box').forEach(b => b.classList.remove('open'));
+      if (!isOpen) box.classList.add('open');
+    }
+
+    // Copy to clipboard
+    function copyText(id, btn) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    // Close copy-boxes when clickin
