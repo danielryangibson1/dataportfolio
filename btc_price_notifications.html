@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1024"/>
+  <title>BTC Price Notifications | Daniel Gibson</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F8F7F4;
+      --ink: #1A1A1A;
+      --ink-light: #6B6B6B;
+      --accent: #2A6B4F;
+      --accent-light: #EAF2EE;
+      --border: #E2E0DB;
+      --white: #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 1.25rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(248,247,244,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .nav-back {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      transition: color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .nav-back:hover {
+      color: var(--ink);
+      background: rgba(0,0,0,0.05);
+    }
+
+    .nav-tag {
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      background: var(--accent-light);
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 9rem 3rem 4rem;
+      max-width: 860px;
+      margin: 0 auto;
+      animation: slideUp 0.9s ease 0.1s both;
+    }
+
+    .hero-label {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+      color: var(--ink);
+    }
+
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .section-divider-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      white-space: nowrap;
+    }
+
+    .section-divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      animation: slideUp 0.9s ease 0.2s both;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--ink-light);
+      margin-top: 0.75rem;
+    }
+
+    .prose strong {
+      color: #3D3D3D;
+      font-weight: 500;
+    }
+    .prose-subheading {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-top: 1.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── PROSE ── */
+    .prose {
+      font-size: 0.95rem;
+      color: var(--ink-light);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .prose p + p {
+      margin-top: 1.1rem;
+    }
+
+    /* ── VIDEO BLOCK ── */
+    .video-block {
+      max-width: 860px;
+      margin: 3rem auto 0;
+      padding: 0 3rem;
+    }
+
+    .video-wrapper {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .video-wrapper video {
+      display: block;
+      width: 100%;
+    }
+
+    .video-caption {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(to bottom, rgba(15,30,50,0.55) 0%, transparent 100%);
+    }
+
+    .video-caption p {
+      font-size: 0.82rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.88);
+      line-height: 1.55;
+      font-weight: 300;
+    }
+
+    /* ── CODE BLOCK ── */
+    .code-section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 3rem 5rem;
+    }
+
+    .code-block {
+      background: #1A1A1A;
+      border-radius: 10px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-block-title {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1.1rem;
+    }
+
+    .code-block pre {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: #d4d4d4;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .code-block .c { color: #6A9955; }   /* comment */
+    .code-block .k { color: #569CD6; }   /* keyword */
+    .code-block .s { color: #CE9178; }   /* string */
+    .code-block .n { color: #9CDCFE; }   /* name/var */
+    .code-block .f { color: #DCDCAA; }   /* function */
+    .code-block .num { color: #B5CEA8; } /* number */
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.25rem 3rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--ink-light);
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .hero, .content, .video-block, .dashboard-block, .code-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .hero { padding-top: 7rem; }
+      .section-divider { padding: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="15 18 9 12 15 6"/></svg>
+      Portfolio
+    </a>
+    <span class="nav-tag">Power BI · Python</span>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <p class="hero-label">Project</p>
+    <h1>BTC Price Notifications</h1>
+    <p class="hero-subtitle">Finding the optimal threshold for notifying users about movements in price</p>
+
+  </section>
+
+  <!-- THE QUESTION -->
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="content">
+    <div class="prose">
+      <p>Push notifications are one of the primary levers for driving user engagement in many businesses, but send too many, and users disable them entirely. The question is: <strong>at what price movement threshold should a notification be sent in order to sustain engagement without tipping users toward turning them off?</strong></p>
+      <p class="prose-subheading">The answer?</p>
+      <p>A threshold of approximately <strong>2.8–3.7%</strong> aligns with published research on roughly every 2–3 days being the optimal notification frequency for fintech apps. The final choice within that range is a product decision: whether to lean toward higher engagement frequency (2.8%) or lower opt-out risk (3.7%).</p>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-block">
+    <div class="video-wrapper">
+      <video autoplay loop muted playsinline>
+        <source src="videos/price_movements.mp4" type="video/mp4">
+      </video>
+      <div class="video-caption">
+        <p>If price has moved more than the selected threshold in the last 24 hours, and it's been 24 hours since the last notification, send a notification</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="section-divider">
+    <span class="section-divider-label">Methodology</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="content">
+    <div class="prose">
+      <p>One year of hourly BTC price data was sourced via the Binance API. For each hour, the maximum price swing within the preceding 24-hour window was calculated (the high divided by the low, minus one, in order to get the percentage change). This is deliberately more sensitive than a simple point-to-point comparison (now vs 24 hours ago): by capturing the widest movement at any point in the last 24 hours rather than between two fixed points in time, it reflects the kind of move a user would actually have noticed and been interested in.</p>
+      <p>A notification will send when a price swing exceeds a given threshold, subject to a 24-hour cooldown that prevents repeated triggers during sustained volatility. The cooldown is a key design decision — it ensures the system drives engagement at a consistent cadence rather than clustering alerts around a single market event.</p>
+    </div>
+  </div>
+
+  <!-- THE THRESHOLDS -->
+  <div class="section-divider">
+    <span class="section-divider-label">The Thresholds</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="content">
+    <div class="prose">
+      <p>Thresholds were derived programmatically from the actual price swing range observed in the dataset, with outliers trimmed from both ends. The five shown in the dashboard — 2.8% through 6.5% — are a presentational subset chosen to illustrate the spread. In practice, a more precise recommendation could be produced by narrowing the range and increasing the number of threshold steps, allowing the analysis to hone in tightly around the optimal value rather than mapping the broader curve.</p>
+    </div>
+  </div>
+
+
+  <div class="section-divider">
+    <span class="section-divider-label">Grounding in Research</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="content">
+    <div class="prose">
+      <p>Industry data on push notification frequency consistently points to a sweet spot of roughly every 2–3 days for apps in the financial space. Research shows that even one push notification per week leads to around 10% of users disabling notifications.</p>
+      <p>At a 2.8% threshold, the simulation produces a notification approximately every 2 days.</p>
+      <p>At 3.7%, it becomes every 3.1 days.</p>
+      <p>The modelled output maps closely to the research-backed range.</p>
+    </div>
+  </div>
+
+  <!-- FINAL CALL -->
+  <div class="section-divider">
+    <span class="section-divider-label">The Final Call</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="content">
+    <div class="prose">
+      <p>Both thresholds are defensible, and at this point the data has done its job. The final call comes down to the preference of the final decision maker.</p>
+    </div>
+  </div>
+
+  <!-- CODE SECTION -->
+  <div class="section-divider">
+    <span class="section-divider-label">For the fellow data nerds</span>
+    <div class="section-divider-line"></div>
+  </div>
+
+  <div class="code-section">
+
+    <div class="prose" style="margin-bottom: 2.5rem;">
+      <p>The full pipeline runs inside Power Query. A Python script makes a paginated call to the Binance API, fetching one year of hourly BTCUSDT candles in batches of 1,000. The output of that script is immediately passed as the input to a second Python script, which calculates the rolling price swings and simulates notification triggers across all thresholds. Power Query then splits the result into three tables: the raw price data, the notification trigger flags, and a lookup table mapping column positions to threshold values.</p>
+    </div>
+
+    <!-- THRESHOLD TRIGGER SCRIPT -->
+    <div class="code-block">
+      <div class="code-block-title">Threshold Trigger Calculation &mdash; Python</div>
+      <pre><span class="k">import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="k">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+
+<span class="n">df</span> = <span class="n">dataset</span>
+<span class="n">df</span>[<span class="s">'DateTime'</span>] = <span class="n">pd</span>.<span class="f">to_datetime</span>(<span class="n">df</span>[<span class="s">'DateTime'</span>])
+<span class="n">df</span> = <span class="n">df</span>.<span class="f">sort_values</span>(<span class="s">'DateTime'</span>).<span class="f">reset_index</span>(drop=<span class="k">True</span>)
+<span class="n">df</span> = <span class="n">df</span>.<span class="f">set_index</span>(<span class="s">'DateTime'</span>)
+
+<span class="n">rolling_max</span> = <span class="n">df</span>[<span class="s">'BTC Price'</span>].<span class="f">rolling</span>(<span class="s">'24h'</span>).<span class="f">max</span>()
+<span class="n">rolling_min</span> = <span class="n">df</span>[<span class="s">'BTC Price'</span>].<span class="f">rolling</span>(<span class="s">'24h'</span>).<span class="f">min</span>()
+<span class="n">df</span>[<span class="s">'price_swing'</span>] = (<span class="n">rolling_max</span> / <span class="n">rolling_min</span> - <span class="num">1</span>)
+<span class="n">df</span> = <span class="n">df</span>.<span class="f">reset_index</span>()
+
+<span class="n">min_threshold</span> = <span class="n">df</span>[<span class="s">'price_swing'</span>].<span class="f">min</span>()
+<span class="n">max_threshold</span> = <span class="n">df</span>[<span class="s">'price_swing'</span>].<span class="f">max</span>()
+<span class="n">thresholds</span> = <span class="n">np</span>.<span class="f">round</span>(<span class="f">abs</span>(<span class="n">np</span>.<span class="f">linspace</span>(<span class="n">min_threshold</span>, <span class="n">max_threshold</span>, <span class="num">18</span>)), <span class="num">3</span>)[<span class="num">3</span>:<span class="num">-7</span>]
+
+<span class="k">for</span> <span class="n">threshold</span> <span class="k">in</span> <span class="n">thresholds</span>:
+    <span class="n">notifications</span> = []
+    <span class="n">last_notification_time</span> = <span class="k">None</span>
+
+    <span class="k">for</span> _, <span class="n">row</span> <span class="k">in</span> <span class="n">df</span>.<span class="f">iterrows</span>():
+        <span class="k">if</span> <span class="f">abs</span>(<span class="f">float</span>(<span class="n">row</span>[<span class="s">'price_swing'</span>])) >= <span class="n">threshold</span>:
+            <span class="k">if</span> <span class="n">last_notification_time</span> <span class="k">is None</span> <span class="k">or</span> \
+               (<span class="n">row</span>[<span class="s">'DateTime'</span>] - <span class="n">last_notification_time</span>).<span class="f">total_seconds</span>() >= <span class="num">86400</span>:
+                <span class="n">notifications</span>.<span class="f">append</span>(<span class="s">'Yes'</span>)
+                <span class="n">last_notification_time</span> = <span class="n">row</span>[<span class="s">'DateTime'</span>]
+            <span class="k">else</span>:
+                <span class="n">notifications</span>.<span class="f">append</span>(<span class="s">'No'</span>)
+        <span class="k">else</span>:
+            <span class="n">notifications</span>.<span class="f">append</span>(<span class="s">'No'</span>)
+
+    <span class="n">df</span>[<span class="s">f'{threshold}%'</span>] = <span class="n">notifications</span>
+
+<span class="n">df</span> = <span class="n">df</span>.<span class="f">drop</span>(columns=[<span class="s">'price_swing'</span>])
+
+<span class="n">lookup</span> = <span class="n">pd</span>.<span class="f">DataFrame</span>({
+    <span class="s">'col_name'</span>: [<span class="s">f'col_{i+1}'</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="f">range</span>(<span class="f">len</span>(<span class="n">thresholds</span>))],
+    <span class="s">'threshold_value'</span>: <span class="n">thresholds</span>
+})
+
+<span class="n">df</span></pre>
+    </div>
+
+    <div class="prose" style="margin-bottom: 2.5rem; margin-top: 0.25rem;">
+      <p>The Python script names threshold columns using their actual percentage values (e.g. <code style="font-family:'Courier New',monospace;font-size:0.85em;background:#e8e6e1;padding:0.1rem 0.35rem;border-radius:3px;">2.8%</code>). Those names are dynamic — change the thresholds and the column names change with them. To ensure the Power BI model never breaks on refresh, the columns are immediately renamed by position in Power Query: <code style="font-family:'Courier New',monospace;font-size:0.85em;background:#e8e6e1;padding:0.1rem 0.35rem;border-radius:3px;">col_1</code>, <code style="font-family:'Courier New',monospace;font-size:0.85em;background:#e8e6e1;padding:0.1rem 0.35rem;border-radius:3px;">col_2</code>, and so on. The Lookup table carries the mapping between position and actual threshold value, and drives a disconnected slicer in the report. DAX then reads the slicer selection via <code style="font-family:'Courier New',monospace;font-size:0.85em;background:#e8e6e1;padding:0.1rem 0.35rem;border-radius:3px;">SELECTEDVALUE</code> and uses <code style="font-family:'Courier New',monospace;font-size:0.85em;background:#e8e6e1;padding:0.1rem 0.35rem;border-radius:3px;">SWITCH</code> to filter against the correct positional column. The result: update the thresholds in Python, refresh, and everything — the slicer labels, the chart markers, the average days calculation — updates automatically without touching a single measure.</p>
+    </div>
+
+    <!-- DAX MEASURE 1 -->
+    <div class="code-block">
+      <div class="code-block-title">Notification Triggered &mdash; DAX</div>
+      <pre><span class="n">BTC Price Notification Triggered</span> =
+
+<span class="k">VAR</span> <span class="n">currently_selected_threshold</span> =
+    <span class="f">SELECTEDVALUE</span> ( <span class="n">slic_BinancePriceData_BTC</span>[<span class="n">col_name</span>] )
+
+<span class="k">VAR</span> <span class="n">count_of_yes</span> =
+    <span class="f">CALCULATE</span> (
+        <span class="f">COUNTROWS</span> ( <span class="n">fact_BinancePriceNotifications_BTC</span> ),
+        <span class="f">SWITCH</span> (
+            <span class="n">currently_selected_threshold</span>,
+            <span class="s">"col_1"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_1</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_2"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_2</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_3"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_3</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_4"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_4</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_5"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_5</span>] = <span class="s">"Yes"</span>
+        )
+    )
+
+<span class="k">VAR</span> <span class="n">btc_Price</span> = [<span class="n">AVG {BTC Price}</span>]
+
+<span class="k">RETURN</span>
+    <span class="f">IF</span> ( <span class="n">count_of_yes</span> = <span class="num">0</span>, <span class="f">BLANK</span>(), <span class="n">btc_Price</span> )</pre>
+    </div>
+
+    <!-- DAX MEASURE 2 -->
+    <div class="code-block">
+      <div class="code-block-title">Avg Days Between Notifications &mdash; DAX</div>
+      <pre><span class="n">Avg Days Between Notifications</span> =
+
+<span class="k">VAR</span> <span class="n">currently_selected_threshold</span> =
+    <span class="f">SELECTEDVALUE</span> ( <span class="n">disc_BinancePriceData_BTC</span>[<span class="n">col_name</span>] )
+
+<span class="k">VAR</span> <span class="n">dates_with_yes</span> =
+    <span class="f">CALCULATETABLE</span> (
+        <span class="f">DISTINCT</span> ( <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">Date</span>] ),
+        <span class="f">SWITCH</span> (
+            <span class="n">currently_selected_threshold</span>,
+            <span class="s">"col_1"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_1</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_2"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_2</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_3"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_3</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_4"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_4</span>] = <span class="s">"Yes"</span>,
+            <span class="s">"col_5"</span>, <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">col_5</span>] = <span class="s">"Yes"</span>
+        )
+    )
+
+<span class="k">VAR</span> <span class="n">days_since_last_yes</span> =
+    <span class="f">ADDCOLUMNS</span> (
+        <span class="f">ADDCOLUMNS</span> (
+            <span class="n">dates_with_yes</span>,
+            <span class="s">"@prev_date"</span>, <span class="f">WINDOW</span> ( <span class="num">-1</span>, REL, <span class="num">-1</span>, REL, <span class="f">ORDERBY</span> ( <span class="n">fact_BinancePriceNotifications_BTC</span>[<span class="n">Date</span>], ASC ) )
+        ),
+        <span class="s">"@days_between"</span>,
+            <span class="f">IF</span> (
+                <span class="k">NOT</span> <span class="f">ISBLANK</span> ( [<span class="n">@prev_date</span>] ),
+                [<span class="n">Date</span>] - [<span class="n">@prev_date</span>]
+            )
+    )
+
+<span class="k">RETURN</span>
+    <span class="f">AVERAGEX</span> ( <span class="n">days_since_last_yes</span>, [<span class="n">@days_between</span>] )</pre>
+    </div>
+
+  </div>
+
+  <footer>Daniel Gibson</footer>
+
+</body>
+</html>
