@@ -353,6 +353,7 @@
 
     .project-thumb {
       width: 100%;
+      max-height: 220px;
       background: var(--accent-light);
       display: flex;
       align-items: center;
@@ -379,7 +380,8 @@
 
     .project-thumb img {
       width: 100%;
-      height: auto;
+      height: 220px;
+      object-fit: cover;
       display: block;
     }
 
@@ -622,11 +624,12 @@
 
     <!-- PLACEHOLDER CARD — duplicate and fill in for future projects -->
     <a class="project-card" href="#" style="opacity:0.4; pointer-events:none;">
-      <div class="project-thumb" style="min-height:180px;"><div class="thumb-coming-soon">Coming Soon</div></div>
+      <div class="project-thumb" style="height:220px; background:#2A6B4F;">
+        <div class="thumb-coming-soon">Coming Soon</div>
+      </div>
       <div class="project-info">
         <p class="project-tag">Coming soon</p>
         <h3 class="project-title">Next Project</h3>
-        <p class="project-desc">More work to be added here.</p>
       </div>
     </a>
 
